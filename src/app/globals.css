@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.timeline-table {
+    position: "absolute";
+    border: "1px solid";
+}
+
+.timeline-table-cell {
+    border: 1px solid #e5e7eb;
+    text-align: center;
+    cursor: pointer;
+}
+
+.player-header {
+    position: sticky;
+    top: 0; 
+    z-index: 2;
+    background-color: white;
+}
+thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: white;
+}
+
+.truncate-text {
+    overflow: hidden;      /* hides the overflowing text */
+    text-overflow: ellipsis; /* adds "..." for overflowed text */
+    white-space: nowrap;   /* prevents text from wrapping to the next line */
+}
