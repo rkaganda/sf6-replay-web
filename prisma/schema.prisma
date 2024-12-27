@@ -1,0 +1,157 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model cfn_raw_replays {
+  id                Int         @id @default(autoincrement())
+  cfn_replay_id     String      @db.VarChar
+  frame             Int
+  round_timer       Int
+  round_number      Int
+  p0_hp_cap         Float
+  p0_hp_cooldown    Float
+  p0_absolute_range Float
+  p0_act_st         Int
+  p0_current_hp     Float
+  p0_drive          Float
+  p0_drive_cooldown Float
+  p0_input_data     Int
+  p0_input_side     Int
+  p0_mactionframe   Int
+  p0_mactionid      Int
+  p0_stance         Int
+  p0_posx           Float
+  p0_posy           Float
+  p0_super          Float
+  p0_hitstun        Int
+  p0_blockstun      Int
+  p1_hp_cap         Float
+  p1_hp_cooldown    Float
+  p1_absolute_range Float
+  p1_act_st         Int
+  p1_current_hp     Float
+  p1_drive          Float
+  p1_drive_cooldown Float
+  p1_input_data     Int
+  p1_input_side     Int
+  p1_mactionframe   Int
+  p1_mactionid      Int
+  p1_stance         Int
+  p1_posx           Float
+  p1_posy           Float
+  p1_super          Float
+  p1_hitstun        Int
+  p1_blockstun      Int
+  cfn_replays       cfn_replays @relation(fields: [cfn_replay_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model cfn_replay_rounds {
+  id            Int         @id @default(autoincrement())
+  cfn_replay_id String      @db.VarChar
+  round_number  Int
+  winner        String      @db.VarChar
+  finish_type   Int
+  cfn_replays   cfn_replays @relation(fields: [cfn_replay_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model cfn_replays {
+  id                                                               String                 @id @db.VarChar
+  player_0_id                                                      BigInt
+  player_1_id                                                      BigInt
+  player_0_character_id                                            Int
+  player_1_character_id                                            Int
+  player_one_input_type                                            Int
+  player_two_input_type                                            Int
+  replay_battle_type                                               Int
+  cfn_raw_replays                                                  cfn_raw_replays[]
+  cfn_replay_rounds                                                cfn_replay_rounds[]
+  sf6_characters_cfn_replays_player_0_character_idTosf6_characters sf6_characters         @relation("cfn_replays_player_0_character_idTosf6_characters", fields: [player_0_character_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  cfn_users_cfn_replays_player_0_idTocfn_users                     cfn_users              @relation("cfn_replays_player_0_idTocfn_users", fields: [player_0_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  sf6_characters_cfn_replays_player_1_character_idTosf6_characters sf6_characters         @relation("cfn_replays_player_1_character_idTosf6_characters", fields: [player_1_character_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  cfn_users_cfn_replays_player_1_idTocfn_users                     cfn_users              @relation("cfn_replays_player_1_idTocfn_users", fields: [player_1_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  video_replay_timings                                             video_replay_timings[]
+  youtube_video_replay                                             youtube_video_replay?
+}
+
+model cfn_user_names {
+  id          Int       @default(autoincrement())
+  cfn_name    String    @db.VarChar
+  cfn_user_id BigInt
+  cfn_users   cfn_users @relation(fields: [cfn_user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([id, cfn_name, cfn_user_id])
+  @@unique([cfn_name, cfn_user_id], map: "uix_cfn_name_cfn_user_id")
+}
+
+model cfn_users {
+  id                                             BigInt           @id @default(autoincrement())
+  cfn_replays_cfn_replays_player_0_idTocfn_users cfn_replays[]    @relation("cfn_replays_player_0_idTocfn_users")
+  cfn_replays_cfn_replays_player_1_idTocfn_users cfn_replays[]    @relation("cfn_replays_player_1_idTocfn_users")
+  cfn_user_names                                 cfn_user_names[]
+}
+
+model move_name_mappings {
+  id             Int             @id @default(autoincrement())
+  character_id   Int?
+  m_action_id    Int
+  act_st         Int
+  move_name      String          @db.VarChar
+  sf6_characters sf6_characters? @relation(fields: [character_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([character_id, m_action_id, act_st], map: "uix_character_id_m_action_id_act_st")
+}
+
+model sf6_characters {
+  id                                                            Int                  @id @default(autoincrement())
+  name                                                          String               @unique @db.VarChar
+  cfn_replays_cfn_replays_player_0_character_idTosf6_characters cfn_replays[]        @relation("cfn_replays_player_0_character_idTosf6_characters")
+  cfn_replays_cfn_replays_player_1_character_idTosf6_characters cfn_replays[]        @relation("cfn_replays_player_1_character_idTosf6_characters")
+  m_action_names                                                m_action_names[]
+  move_name_mappings                                            move_name_mappings[]
+}
+
+model video_replay_timings {
+  id                       Int         @id @default(autoincrement())
+  cfn_replay_id            String      @db.VarChar
+  round_number             Int
+  round_start_time_seconds Float
+  cfn_replays              cfn_replays @relation(fields: [cfn_replay_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([cfn_replay_id, round_number], map: "uix_cfn_replay_id_round_number_timing")
+}
+
+model youtube_video_replay {
+  id               Int         @id @default(autoincrement())
+  youtube_video_id String      @unique @db.VarChar
+  cfn_replay_id    String      @unique @db.VarChar
+  cfn_replays      cfn_replays @relation(fields: [cfn_replay_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([cfn_replay_id, youtube_video_id], map: "uix_youtube_video_replay_cfn_replay_id_youtube_video_id")
+}
+
+model alembic_version {
+  version_num String @id(map: "alembic_version_pkc") @db.VarChar(32)
+}
+
+model act_st_names {
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar
+}
+
+model m_action_names {
+  id             Int             @id @default(autoincrement())
+  m_action_id    Int
+  character_id   Int?
+  name           String          @db.VarChar
+  sf6_characters sf6_characters? @relation(fields: [character_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model stance_names {
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar
+}

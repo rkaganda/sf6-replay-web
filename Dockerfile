@@ -8,7 +8,9 @@ RUN yarn install
 
 COPY . .
 
-RUN prisma generate
+RUN yarn prisma db pull
+
+RUN yarn prisma generate
 
 RUN yarn build
 
