@@ -5,7 +5,7 @@ export default async function CFNReplayList() {
         const youtubeCFNReplays = await getYoutubeCFNReplays();
 
         return (
-            <div className="grid grid-rows-[20px_1fr_20px] min-h-screen sm:p-2 font-[family-name:var(--font-geist-sans)]">
+            <div className="grid grid-rows-[20px_1fr_20px] sm:p-2 font-[family-name:var(--font-geist-sans)]">
                 {youtubeCFNReplays.map((youtubeCFNreplay) => (
                     <a  
                         key={youtubeCFNreplay.cfnReplayId} 
