@@ -1,5 +1,5 @@
 import prisma from "@/lib/db";
-import { CFNReplayRounds, ReplayData, VideoReplayTiming, CFNReplay, SF6Character, CFNUser, CFNRawReplayData, MoveNameMapping } from "../../types";
+import { CFNReplayRounds, ReplayData, VideoReplayTiming, CFNReplay, CFNRawReplayData, MoveNameMapping, YoutubeCFNReplay } from "../../types";
 
 export const getCFNReplay = async (cfnReplayId: string): Promise<CFNReplay> => {
     try {
@@ -168,3 +168,22 @@ export const getCFNReplay = async (cfnReplayId: string): Promise<CFNReplay> => {
         throw new Error("Failed to fetch replay data.");
     }
 };
+
+export const getYoutubeCFNReplays = async (): Promise<YoutubeCFNReplay[]> => {
+    try {
+        const db_cfn_youtube_replays = await prisma.youtube_video_replay.findMany({      
+
+        });
+
+        const cfnReplays = db_cfn_youtube_replays.map((mapping: { cfn_replay_id: string; youtube_video_id: string; }) => ({
+            cfnReplayId: mapping.cfn_replay_id,
+            youtubeVideoId: mapping.youtube_video_id,
+        }));
+
+        return cfnReplays;
+    } catch (error) {
+        console.error("Error act_St data:", error);
+        throw new Error("Failed act_St data.");
+    }
+    
+}

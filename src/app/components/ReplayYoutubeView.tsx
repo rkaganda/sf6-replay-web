@@ -12,12 +12,15 @@ const ReplayYouTubeView = ({ youtubeVideoID, currentSecond, onTimeUpdate }: Repl
     const [player, setPlayer] = useState<any>(null);
 
     useEffect(() => {
-        const tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/player_api";
-        const firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
+        const scriptId = 'youtube-player-script';
+        if (!document.getElementById(scriptId)) {
+            const script = document.createElement('script');
+            script.src = "https://www.youtube.com/player_api";
+            script.id = scriptId;
+            document.head.appendChild(script);
+        }
 
-        (window as any).onYouTubePlayerAPIReady = () => {
+        const onYouTubePlayerAPIReady = () => {
             const newPlayer = new (window as any).YT.Player('ytplayer', {
                 height: '360',
                 width: '640',
@@ -35,7 +38,6 @@ const ReplayYouTubeView = ({ youtubeVideoID, currentSecond, onTimeUpdate }: Repl
                                 onTimeUpdate(currentTime);
                             }, 1000);
 
-                            // Clear interval when playback ends
                             const stopInterval = () => clearInterval(interval);
                             newPlayer.addEventListener('onStateChange', (e: any) => {
                                 if (e.data === (window as any).YT.PlayerState.ENDED) {
@@ -49,13 +51,24 @@ const ReplayYouTubeView = ({ youtubeVideoID, currentSecond, onTimeUpdate }: Repl
             setPlayer(newPlayer);
         };
 
-    }, [youtubeVideoID, onTimeUpdate, player]);
+        (window as any).onYouTubePlayerAPIReady = onYouTubePlayerAPIReady;
+
+        return () => {
+            if (player) {
+                console.log("time to die");
+                player.destroy(); 
+                setPlayer(null); // Ensure no lingering reference
+            }
+        };
+    }, [youtubeVideoID]); 
 
     useEffect(() => {
-        if (player && typeof player.getCurrentTime === "function" && typeof player.seekTo === "function" && currentSecond >= 0) {
-            const currentTime = Math.floor(player.getCurrentTime());
-            if (Math.abs(currentTime - currentSecond) > 0) {
-                player.seekTo(currentSecond, true);
+        if (player && typeof player.getCurrentTime === "function" && typeof player.seekTo === "function") {
+            if (currentSecond >= 0) {
+                const currentTime = Math.floor(player.getCurrentTime());
+                if (Math.abs(currentTime - currentSecond) > 0) {
+                    player.seekTo(currentSecond, true);
+                }
             }
         }
     }, [player, currentSecond]);

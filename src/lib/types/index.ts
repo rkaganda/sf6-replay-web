@@ -8,6 +8,11 @@ export type CFNReplayRounds = {
     timings: RoundTimeRanges
 }
 
+export type YoutubeCFNReplay = {
+    cfnReplayId: string,
+    youtubeVideoId: string
+}
+
 export type VideoReplayTiming = {
     round_number: number,
     round_start_time_seconds: number
