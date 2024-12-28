@@ -10,6 +10,7 @@ type ReplayYouTubeViewProps = {
 
 const ReplayYouTubeView = ({ youtubeVideoID, currentSecond, onTimeUpdate }: ReplayYouTubeViewProps) => {
     const [player, setPlayer] = useState<any>(null);
+    const [playerPaused, setPlayerPause] = useState<boolean>(false);
 
     useEffect(() => {
         const scriptId = 'youtube-player-script';
@@ -36,6 +37,7 @@ const ReplayYouTubeView = ({ youtubeVideoID, currentSecond, onTimeUpdate }: Repl
                             const interval = setInterval(() => {
                                 const currentTime = Math.floor(newPlayer?.getCurrentTime() || 0);
                                 onTimeUpdate(currentTime);
+                                setPlayerPause(false)
                             }, 1000);
 
                             const stopInterval = () => clearInterval(interval);
@@ -44,7 +46,7 @@ const ReplayYouTubeView = ({ youtubeVideoID, currentSecond, onTimeUpdate }: Repl
                                     stopInterval();
                                 }
                             });
-                        }
+                        } 
                     },
                 },
             });
@@ -66,9 +68,12 @@ const ReplayYouTubeView = ({ youtubeVideoID, currentSecond, onTimeUpdate }: Repl
             if (currentSecond >= 0) {
                 const currentTime = Math.floor(player.getCurrentTime());
                 if (Math.abs(currentTime - currentSecond) > 0) {
+                    const prevState:number = player.getPlayerState();
                     player.pauseVideo();
                     player.seekTo(currentSecond, true);
-                    player.playVideo();
+                    if (prevState===1 || prevState===3) {
+                        player.playVideo();
+                    }
                 }
             }
         }

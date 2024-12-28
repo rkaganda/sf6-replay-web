@@ -59,6 +59,7 @@ const ReplayTimelineTable = ({
     const rowsPerPage = Math.ceil(VIEWPORT_HEIGHT / ROW_HEIGHT);
     const endIndex = Math.min(startIndex + rowsPerPage, totalFrames);
     const visibleFrames = framesArray.slice(startIndex, endIndex);
+    const tableFrameBacktrack: number = 190;
 
     const playerHeaders = [
         "drive",
@@ -202,7 +203,9 @@ const ReplayTimelineTable = ({
                         <tbody>
                             {/* Table Body */}
                             {visibleFrames.map(({ frame, data }) => (
-                                <tr key={frame}>
+                                <tr key={frame}
+                                    onClick={() => handleFrameClick(tableRound, frame-tableFrameBacktrack)}
+                                >
                                     <td
                                         className="cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap text-center"
                                         colSpan={2}
@@ -217,7 +220,7 @@ const ReplayTimelineTable = ({
                                         key={`p0-${frame}-state`}
                                         className="cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap text-center"
                                         colSpan={2}
-                                        onClick={() => handleFrameClick(tableRound, frame)}
+                                        
                                     >
                                         {toNormalizeLowerCase(
                                             actStNames.find((actStName: ActStName) => actStName.id === data[0].act_st)?.name?.toString() ||
@@ -228,7 +231,7 @@ const ReplayTimelineTable = ({
                                         key={`p0-${frame}-action-name`}
                                         className="cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap text-center"
                                         colSpan={2}
-                                        onClick={() => handleFrameClick(tableRound, frame)}
+                                        
                                     >
                                         {toNormalizeLowerCase(
                                             mActionNames[0].find((mActionName: MActionName) => mActionName.id === data[0].mactionid)?.name?.toString() ||
@@ -248,7 +251,7 @@ const ReplayTimelineTable = ({
                                                   ? 'text-red-500'
                                                   : ''
                                               }`}
-                                            onClick={() => handleFrameClick(tableRound, frame)}
+                                            
                                         >
                                             {data[0]?.[header as keyof CFNReplayFrameData]?.toString().substring(0, 4)}
                                         </td>
@@ -273,7 +276,7 @@ const ReplayTimelineTable = ({
                                         key={`p1-${frame}-state`}
                                         colSpan={2}
                                         className="cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap text-center"
-                                        onClick={() => handleFrameClick(tableRound, frame)}
+                                        
                                     >
                                         {toNormalizeLowerCase(
                                             actStNames.find((actStName: ActStName) => actStName.id === data[1].act_st)?.name?.toString() ||
@@ -284,7 +287,7 @@ const ReplayTimelineTable = ({
                                         key={`p1-${frame}-action-name`}
                                         colSpan={2}
                                         className="cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap text-center truncate-text"
-                                        onClick={() => handleFrameClick(tableRound, frame)}
+                                        
                                     >
                                         {toNormalizeLowerCase(
                                             mActionNames[1].find((mActionName: MActionName) => mActionName.id === data[1].mactionid)?.name?.toString() ||
@@ -304,7 +307,7 @@ const ReplayTimelineTable = ({
                                                   ? 'text-red-500'
                                                   : ''
                                               }`}
-                                            onClick={() => handleFrameClick(tableRound, frame)}
+                                            
                                         >
                                             {data[1]?.[header as keyof CFNReplayFrameData]?.toString().substring(0, 4)}
                                         </td>

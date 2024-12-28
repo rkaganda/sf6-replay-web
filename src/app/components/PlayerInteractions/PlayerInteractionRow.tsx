@@ -15,11 +15,11 @@ const PlayerInteractionRow = ({
     replayFrames, 
     mActionNames  
 }: PlayerInteractionRowProps) => {
-    const interactionFrameBacktrack: number = 180;
     const interactionStateBacktrack: number = 2;
+    const interactionFrameBacktrack: number = 180;
 
     const handleRowClick = (startFrame:number) => {
-        const newFrame = startFrame-interactionFrameBacktrack
+        const newFrame = startFrame - interactionFrameBacktrack
         handleFrameClick(newFrame)
     }
     const toNormalizeLowerCase = (str: string): string => {
