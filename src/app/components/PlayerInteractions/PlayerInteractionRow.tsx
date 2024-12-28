@@ -29,9 +29,17 @@ const PlayerInteractionRow = ({
         return value === 0 ? "-" : (value > 0 ? "+" + value.toString() : value.toString());
     }
 
-    const getMActionName = (mActionId: number) => {
+    const getMoveName = (player: 0|1) => {
+        const moveName = characters[player].moveMapping.get(replayFrames[playerInteraction.start_frame][player].move_mapping_id)?.moveName;
+        const mActionId = replayFrames[playerInteraction.start_frame-interactionStateBacktrack][player].mactionid;
+        const mActionName = getMActionName(mActionId, player);
+
+        return (moveName?.length||0>0 ? moveName : mActionName)
+    }
+
+    const getMActionName = (mActionId: number, player: 0|1) => {
         return toNormalizeLowerCase(
-            mActionNames[0].find((mActionName: MActionName) => mActionName.id === mActionId)?.name?.toString() ||
+            mActionNames[player].find((mActionName: MActionName) => mActionName.id === mActionId)?.name?.toString() ||
             "id: " + mActionId.toString()
         )
     };
@@ -52,10 +60,8 @@ const PlayerInteractionRow = ({
                 {appendSign(playerInteraction.change[0].super_change)}
             </td>
             <td className="text-center overflow-hidden text-ellipsis whitespace-nowrap">
-                {getMActionName(replayFrames[playerInteraction.start_frame-interactionStateBacktrack][0].mactionid)}
-                {/* {replayFrames[playerInteraction.start_frame][0].mactionid}-
-                {replayFrames[playerInteraction.start_frame][0].move_mapping_id}
-                {characters[0].moveMapping.get(replayFrames[playerInteraction.start_frame][0].move_mapping_id)?.moveName} */}
+                {/* {getMActionName(replayFrames[playerInteraction.start_frame-interactionStateBacktrack][0].mactionid, 0)} */}
+                {getMoveName(0)}
             </td>
             {/* Interaction Data */}
             <td className=" text-center w-40">
@@ -77,10 +83,8 @@ const PlayerInteractionRow = ({
             </td>
             {/* Player 2 Data */}
             <td className="text-center overflow-hidden text-ellipsis whitespace-nowrap">
-                {getMActionName(replayFrames[playerInteraction.start_frame-interactionStateBacktrack][1].mactionid)}
-                {/* {replayFrames[playerInteraction.start_frame][1].mactionid}-
-                {replayFrames[playerInteraction.start_frame][1].move_mapping_id}
-                {characters[1].moveMapping.get(replayFrames[playerInteraction.start_frame][1].move_mapping_id)?.moveName} */}
+                {/* {getMActionName(replayFrames[playerInteraction.start_frame-interactionStateBacktrack][1].mactionid, 1)} */}
+                {getMoveName(1)}
             </td>
             <td className=" text-blue-500 text-center">
                 {appendSign(playerInteraction.change[1].super_change)}
