@@ -1,5 +1,5 @@
 'use client'
-import { ActStName, CFNReplayRounds, MActionName, ReplayInteractions, SF6Character } from "../../../lib/types";
+import { ActStName, CFNReplay, CFNReplayRounds, MActionName, ReplayInteractions, SF6Character } from "../../../lib/types";
 import PlayerInteractionTable from "./PlayerInteractionsTable";
 
 type PlayerInteractionsTabProps = {
@@ -7,21 +7,17 @@ type PlayerInteractionsTabProps = {
     activeTab: number;
     replayInteractions: ReplayInteractions
     handleFrameClick: (round: number, frame: number) => void;
-    actStNames: ActStName[];
     mActionNames: { 0: MActionName[]; 1: MActionName[]; };
-    characters: {[player: number]: SF6Character};
-    roundData: {[rounds: number]: CFNReplayRounds};
+    cfnReplay: CFNReplay;
 }
 
 const PlayerInteractionsTab = ({ 
     currentFrame, 
     activeTab, 
     handleFrameClick,
-    actStNames,
     mActionNames,
-    characters,
     replayInteractions,
-    roundData
+    cfnReplay
 }: PlayerInteractionsTabProps) => {
     
     const roundsKeys = Object.keys(replayInteractions.round)
@@ -37,30 +33,16 @@ const PlayerInteractionsTab = ({
                         className={`pane ${activeTab === roundNumber ? "visible" : "hidden"}`}
                     >
                         <PlayerInteractionTable
+                            cfnPlayers={cfnReplay.cfnPlayers}
                             mActionNames={mActionNames}
-                            replayFrames={roundData[roundNumber].frames}
-                            characters={characters}
+                            replayFrames={cfnReplay.replayData.replayRounds[roundNumber].frames}
+                            characters={cfnReplay.characters}
                             handleFrameClick = {(frame: number) => handleFrameClick(roundNumber, frame)} 
                             roundInteractions={replayInteractions.round[roundNumber]}
                         />
                     </div>
                 ))}
             </div>
-
-            <style jsx>{`
-        .tabs {
-          class="inline-flex"
-        }
-        .tab.active {
-          background: #ddd;
-        }
-        .pane {
-          display: none;
-        }
-        .pane.visible {
-          display: block;
-        }
-      `}</style>
         </div>
     );
 };

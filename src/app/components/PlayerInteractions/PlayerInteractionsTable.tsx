@@ -1,4 +1,4 @@
-import { CFNReplayFrameData, MActionName, MoveNameMapping, PlayerInteraction, SF6Character } from "@/lib/types";
+import { CFNReplayFrameData, CFNUser, MActionName, MoveNameMapping, PlayerInteraction, SF6Character } from "@/lib/types";
 import PlayerInteractionRow from "./PlayerInteractionRow";
 
 type PlayerInteractionsTableProps = {
@@ -7,30 +7,38 @@ type PlayerInteractionsTableProps = {
     characters: {[player: number]: SF6Character};
     replayFrames: { [frame: number]: {[player: number]: CFNReplayFrameData }},
     mActionNames: { 0: MActionName[]; 1: MActionName[]; };
+    cfnPlayers: {[player: number]: CFNUser}
 }
 
-const PlayerInteractionTable = ({roundInteractions, handleFrameClick, characters, replayFrames, mActionNames}: PlayerInteractionsTableProps) => {
+const PlayerInteractionTable = ({
+    roundInteractions, 
+    handleFrameClick, 
+    characters, 
+    replayFrames, 
+    mActionNames,
+    cfnPlayers
+}: PlayerInteractionsTableProps) => {
     return (
         <div className="overflow-y-auto box-border h-80 w-128">
-            <table className="table-fixed w-full border-collapse border border-gray-300">
+            <table className="table-fixed w-full border-collapse interaction-table">
                 {/* Table Head */}
-                <thead className="bg-gray-100 sticky top-0">
+                <thead className="sticky top-0">
                     {/* First Header Row */}
                     <tr>
                         <th
                             colSpan={4}
-                            className="text-center  bg-gray-200 font-bold"
+                            className="text-center font-bold"
                         >
-                            Player 1
+                            {cfnPlayers[0]?.cfnNames[0] || "Player 1"} - {characters[0]?.name || "Unknown"}
                         </th>
-                        <th className="w-40 border border-gray-300 bg-gray-200 font-bold text-center">
-                            Interaction
+                        <th className="w-40 font-bold text-center">
+                           
                         </th>
                         <th
                             colSpan={4}
-                            className="text-center  bg-gray-200 font-bold"
+                            className="text-center font-bold"
                         >
-                            Player 2
+                            {cfnPlayers[1]?.cfnNames[0] || "Player 1"} - {characters[1]?.name || "Unknown"}
                         </th>
                     </tr>
                     {/* Second Header Row */}

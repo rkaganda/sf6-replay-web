@@ -63,8 +63,7 @@ const ReplayTimelineTable = ({
     const playerHeaders = [
         "drive",
         "super",
-        "posx",
-        "posy",
+        "current_hp"
     ];
     const toNormalizeLowerCase = (str: string): string => {
         return str.charAt(0) + str.slice(1).toLowerCase();
@@ -107,7 +106,7 @@ const ReplayTimelineTable = ({
     return (
         <div>
             {/* Duplicate Header */}
-            <div style={{ position: "sticky", top: 0, zIndex: 10, background: "white" }}>
+            <div style={{ position: "sticky", top: 0, zIndex: 10 }}>
                 <table className="table-fixed w-full"
                     style={{
                         // height: `${VIEWPORT_HEIGHT}px`,
@@ -115,34 +114,33 @@ const ReplayTimelineTable = ({
                         // overflowX: "auto",
                         // position: "relative",
                         // TODO adjust for scollbar width
-                        width: `${VIEWPORT_WIDTH}px`,
+                        width: `${VIEWPORT_WIDTH-20}px`,
                     }}
                 >
                     <thead>
                         <tr>
-                            <th colSpan={playerHeaders.length} className="player-header min-w-1">
+                            <th colSpan={13}>
                                 {cfnPlayers[0]?.cfnNames[0] || "Player 1"} - {characters[0]?.name || "Unknown"}
                             </th>
-                            <th className="player-header min-w-1" colSpan={7}></th>
-                            <th colSpan={playerHeaders.length} className="player-header min-w-1">
+                            <th colSpan={12} >
                                 {cfnPlayers[1]?.cfnNames[0] || "Player 2"} - {characters[1]?.name || "Unknown"}
                             </th>
                         </tr>
                         <tr>
-                            <th className="player-header min-w-1" colSpan={2} style={{ borderBottom: "1px solid" }}>move</th>
-                            <th className="player-header min-w-1" style={{ borderBottom: "1px solid" }}>state</th>
-                            <th className="player-header min-w-36" colSpan={2} style={{ borderBottom: "1px solid" }}>action</th>
+                            <th colSpan={2}>move</th>
+                            <th colSpan={2}>state</th>
+                            <th colSpan={2}>action</th>
                             {playerHeaders.map((header) => (
-                                <th key={`p1-${header}`} className="player-header min-w-1" style={{ borderBottom: "1px solid" }}>
+                                <th key={`p1-${header}`} colSpan={2} >
                                     {header}
                                 </th>
                             ))}
-                            <th className="player-header min-w-1" style={{ borderBottom: "1px solid" }}>Timer</th>
-                            <th className="player-header min-w-1" colSpan={2} style={{ borderBottom: "1px solid" }}>move</th>
-                            <th className="player-header min-w-1" style={{ borderBottom: "1px solid" }}>state</th>
-                            <th className="player-header min-w-36" colSpan={2} style={{ borderBottom: "1px solid" }}>action</th>
+                            <th colSpan={1}>Timer</th>
+                            <th colSpan={2}>move</th>
+                            <th colSpan={2}>state</th>
+                            <th colSpan={2}>action</th>
                             {playerHeaders.map((header) => (
-                                <th key={`p2-${header}`} className="player-header min-w-1" style={{ borderBottom: "1px solid" }}>
+                                <th key={`p2-${header}`} colSpan={2} >
                                     {header}
                                 </th>
                             ))}
@@ -158,7 +156,7 @@ const ReplayTimelineTable = ({
                 style={{
                     height: `${VIEWPORT_HEIGHT}px`,
                     overflowY: "auto",
-                    overflowX: "auto",
+                    // overflowX: "auto",
                     position: "relative",
                     width: `${VIEWPORT_WIDTH}px`,
                 }}
@@ -175,25 +173,27 @@ const ReplayTimelineTable = ({
                         style={{
                             position: "absolute",
                             top: `${startIndex * ROW_HEIGHT}px`,
-                            width: "100%",
+                            //width: `${VIEWPORT_WIDTH}px`,
                         }}
                     >
                         <thead style={{ visibility: 'hidden'}}>
                             <tr style={{ visibility: 'hidden'}}>
+                            {/* <thead >
+                            <tr > */}
                                 <th colSpan={2} >move</th>
-                                <th >state</th>
+                                <th colSpan={2}>state</th>
                                 <th colSpan={2} >action</th>
                                 {playerHeaders.map((header) => (
-                                    <th key={`p1-${header}`}>
+                                    <th key={`p1-${header}`} colSpan={2}>
                                         {header}
                                     </th>
                                 ))}
-                                <th >Timer</th>
-                                <th >move</th>
-                                <th >state</th>
-                                <th >action</th>
+                                <th colSpan={1}>Timer</th>
+                                <th colSpan={2}>move</th>
+                                <th colSpan={2}>state</th>
+                                <th colSpan={2}>action</th>
                                 {playerHeaders.map((header) => (
-                                    <th key={`p2-${header}`} >
+                                    <th key={`p2-${header}`} colSpan={2}>
                                         {header}
                                     </th>
                                 ))}
@@ -204,7 +204,7 @@ const ReplayTimelineTable = ({
                             {visibleFrames.map(({ frame, data }) => (
                                 <tr key={frame}>
                                     <td
-                                        className="timeline-table-cell min-w-1"
+                                        className="cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap text-center"
                                         colSpan={2}
                                     >
                                         <MoveMapping
@@ -215,7 +215,8 @@ const ReplayTimelineTable = ({
                                     </td>
                                     <td
                                         key={`p0-${frame}-state`}
-                                        className="timeline-table-cell min-w-1"
+                                        className="cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap text-center"
+                                        colSpan={2}
                                         onClick={() => handleFrameClick(tableRound, frame)}
                                     >
                                         {toNormalizeLowerCase(
@@ -225,7 +226,7 @@ const ReplayTimelineTable = ({
                                     </td>
                                     <td
                                         key={`p0-${frame}-action-name`}
-                                        className="timeline-table-cell min-w-36 truncate-text"
+                                        className="cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap text-center"
                                         colSpan={2}
                                         onClick={() => handleFrameClick(tableRound, frame)}
                                     >
@@ -237,20 +238,30 @@ const ReplayTimelineTable = ({
                                     {playerHeaders.map((header) => (
                                         <td
                                             key={`p0-${frame}-${header}`}
-                                            className="timeline-table-cell min-w-1"
+                                            colSpan={2}
+                                            className={`cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap text-center ${
+                                                header === 'drive'
+                                                  ? 'text-green-500'
+                                                  : header === 'super'
+                                                  ? 'text-blue-500'
+                                                  : header === 'current_hp'
+                                                  ? 'text-red-500'
+                                                  : ''
+                                              }`}
                                             onClick={() => handleFrameClick(tableRound, frame)}
                                         >
                                             {data[0]?.[header as keyof CFNReplayFrameData]?.toString().substring(0, 4)}
                                         </td>
                                     ))}
                                     <td
-                                        className="timeline-table-cell min-w-1"
+                                        colSpan={1}
+                                        className="cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap text-center"
                                     >
                                         {data[0]?.round_timer || "-"}
                                     </td>
                                     <td
                                         colSpan={2}
-                                        className="timeline-table-cell min-w-1"
+                                        className="cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap text-center"
                                     >
                                         <MoveMapping
                                             moveId={data[1].move_mapping_id}
@@ -260,7 +271,8 @@ const ReplayTimelineTable = ({
                                     </td>
                                     <td
                                         key={`p1-${frame}-state`}
-                                        className="timeline-table-cell min-w-1"
+                                        colSpan={2}
+                                        className="cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap text-center"
                                         onClick={() => handleFrameClick(tableRound, frame)}
                                     >
                                         {toNormalizeLowerCase(
@@ -271,7 +283,7 @@ const ReplayTimelineTable = ({
                                     <td
                                         key={`p1-${frame}-action-name`}
                                         colSpan={2}
-                                        className="timeline-table-cell min-w-36 truncate-text"
+                                        className="cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap text-center truncate-text"
                                         onClick={() => handleFrameClick(tableRound, frame)}
                                     >
                                         {toNormalizeLowerCase(
@@ -282,7 +294,16 @@ const ReplayTimelineTable = ({
                                     {playerHeaders.map((header) => (
                                         <td
                                             key={`p1-${frame}-${header}`}
-                                            className="timeline-table-cell min-w-1"
+                                            colSpan={2}
+                                            className={`cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap text-center ${
+                                                header === 'drive'
+                                                  ? 'text-green-500'
+                                                  : header === 'super'
+                                                  ? 'text-blue-500'
+                                                  : header === 'current_hp'
+                                                  ? 'text-red-500'
+                                                  : ''
+                                              }`}
                                             onClick={() => handleFrameClick(tableRound, frame)}
                                         >
                                             {data[1]?.[header as keyof CFNReplayFrameData]?.toString().substring(0, 4)}

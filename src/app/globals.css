@@ -3,49 +3,69 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
+    --background: rgba(0, 0, 0, 0.9);
     --foreground: #ededed;
-  }
-}
+    --link-color: #3b82f6;
+    --button-background: #1f2937;
+    --button-text: #f9fafb;
+} 
+
 
 body {
   color: var(--foreground);
-  background: var(--background);
+  background: rgba(22, 22, 22, 0.9);
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.timeline-table {
-    position: "absolute";
-    border: "1px solid";
+th {
+    color: rgba(46, 46, 46, 0.9);
+    background:  rgba(255, 255, 255, 0.9); 
 }
 
-.timeline-table-cell {
-    border: 1px solid #e5e7eb;
-    text-align: center;
+input {
+    color: rgba(255, 255, 255, 0.9);
+    background: #2b2b2be6;
+}
+
+/* th, td {
+    border: 4px;
+    border: 1px solid red;
+} */
+
+tr{
+    border-radius: 8px; 
+    overflow: hidden; 
+    padding-top: 10px;
+}
+
+.interaction-row {
     cursor: pointer;
+    box-shadow: 0 7px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    border-radius: 8px; 
+    overflow: hidden; 
+}
+tr:hover {
+    background-color:  rgba(36, 36, 36, 0.9); 
 }
 
-.player-header {
-    position: sticky;
-    top: 0; 
-    z-index: 2;
-    background-color: white;
-}
-thead th {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    background-color: white;
+th {
+    color:  rgba(255, 255, 255, 0.9); 
+    background-color:  rgba(27, 27, 27, 0.9); 
 }
 
-.truncate-text {
-    overflow: hidden;      /* hides the overflowing text */
-    text-overflow: ellipsis; /* adds "..." for overflowed text */
-    white-space: nowrap;   /* prevents text from wrapping to the next line */
-}
+
+.tab {
+    color:  rgba(255, 255, 255, 0.9); 
+}  
+
+.tab:hover {
+    background-color:  rgba(119, 119, 119, 0.9); 
+} 
+
+.tab.active {
+    background-color:  rgba(29, 29, 29, 0.9); 
+    
+}   
+
+

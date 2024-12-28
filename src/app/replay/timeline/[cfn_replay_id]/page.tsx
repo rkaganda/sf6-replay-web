@@ -16,7 +16,7 @@ export default async function Page({ params }: { params: Promise<{ cfn_replay_id
         const replayInteractions = await getReplayInteractions(cfn_replay_id);
 
         return (
-            <div className="grid grid-rows-[20px_1fr_20px]  min-h-screen sm:p-2 font-[family-name:var(--font-geist-sans)]">
+            <div className="min-h-screen sm:p-2 font-[family-name:var(--font-geist-sans)]">
                 <main className="flex flex-col sm:items-start">
                     <div>
                         <p>CFN Replay ID: {cfn_replay_id} YouTube Video ID: {cfnReplay.replayData.youtubeVideoId}</p>

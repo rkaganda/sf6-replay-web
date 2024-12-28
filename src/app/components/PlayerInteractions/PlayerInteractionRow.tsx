@@ -8,8 +8,14 @@ type PlayerInteractionRowProps = {
     mActionNames: { 0: MActionName[]; 1: MActionName[]; };
 }
 
-const PlayerInteractionRow = ({ playerInteraction, handleFrameClick, characters, replayFrames, mActionNames  }: PlayerInteractionRowProps) => {
-    const interactionFrameBacktrack: number = 190;
+const PlayerInteractionRow = ({ 
+    playerInteraction, 
+    handleFrameClick,
+    characters, 
+    replayFrames, 
+    mActionNames  
+}: PlayerInteractionRowProps) => {
+    const interactionFrameBacktrack: number = 180;
     const interactionStateBacktrack: number = 2;
 
     const handleRowClick = (startFrame:number) => {
@@ -19,6 +25,9 @@ const PlayerInteractionRow = ({ playerInteraction, handleFrameClick, characters,
     const toNormalizeLowerCase = (str: string): string => {
         return str.charAt(0) + str.slice(1).toLowerCase();
     };
+    const appendSign = (value: number): string => {
+        return value === 0 ? "-" : (value > 0 ? "+" + value.toString() : value.toString());
+    }
 
     const getMActionName = (mActionId: number) => {
         return toNormalizeLowerCase(
@@ -29,18 +38,18 @@ const PlayerInteractionRow = ({ playerInteraction, handleFrameClick, characters,
 
     return (
         <tr 
-            className="hover:bg-gray-50 border border-gray-300 m-3"
+            className="interaction-row"
             onClick={() => handleRowClick(playerInteraction.start_frame)}
         >
             {/* Player 1 Data */}
             <td className=" text-red-500 text-center">
-                {playerInteraction.change[0].hp_change}
+                {appendSign(playerInteraction.change[0].hp_change)}
             </td>
             <td className=" text-green-500 text-center">
-                {playerInteraction.change[0].drive_change}
+                {appendSign(playerInteraction.change[0].drive_change)}
             </td>
             <td className=" text-blue-500 text-center">
-                {playerInteraction.change[0].super_change}
+                {appendSign(playerInteraction.change[0].super_change)}
             </td>
             <td className="text-center overflow-hidden text-ellipsis whitespace-nowrap">
                 {getMActionName(replayFrames[playerInteraction.start_frame-interactionStateBacktrack][0].mactionid)}
@@ -74,13 +83,13 @@ const PlayerInteractionRow = ({ playerInteraction, handleFrameClick, characters,
                 {characters[1].moveMapping.get(replayFrames[playerInteraction.start_frame][1].move_mapping_id)?.moveName} */}
             </td>
             <td className=" text-blue-500 text-center">
-                {playerInteraction.change[1].super_change}
+                {appendSign(playerInteraction.change[1].super_change)}
             </td>
             <td className=" text-green-500 text-center">
-                {playerInteraction.change[1].drive_change}
+                {appendSign(playerInteraction.change[1].drive_change)}
             </td>
             <td className=" text-red-500 text-center">
-                {playerInteraction.change[1].hp_change}
+                {appendSign(playerInteraction.change[1].hp_change)}
             </td>
         </tr>
     )

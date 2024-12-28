@@ -10,37 +10,24 @@ type ReplayDataTabsViewProps = {
     handleFrameClick: (round: number, frame: number) => void;
     actStNames: ActStName[];
     mActionNames: { 0: MActionName[]; 1: MActionName[]; };
+    roundKeys: number[];
 }
 
-const REplayDataTabsView = ({ 
+const ReplayDataTabsView = ({ 
     cfnReplay, 
     currentFrame, 
     activeTab, 
     handleTabClick, 
     handleFrameClick,
     actStNames,
-    mActionNames
+    mActionNames,
+    roundKeys,
 }: ReplayDataTabsViewProps) => {
-    
-    const roundsKeys = Object.keys(cfnReplay.replayData.replayRounds)
-        .map(Number)
-        .sort((a, b) => a - b);
-        
+
     return (
         <div>
-            <div className="tabs">
-                {roundsKeys.map((roundNumber) => (
-                    <button
-                        key={roundNumber}
-                        className={`tab ${activeTab === roundNumber ? "active" : ""}`}
-                        onClick={() => handleTabClick(roundNumber)}
-                    >
-                        Round {roundNumber+1}
-                    </button>
-                ))}
-            </div>
             <div className="tab-content">
-                {roundsKeys.map((roundNumber) => (
+                {roundKeys.map((roundNumber) => (
                     <div
                         key={roundNumber}
                         className={`pane ${activeTab === roundNumber ? "visible" : "hidden"}`}
@@ -59,29 +46,8 @@ const REplayDataTabsView = ({
                     </div>
                 ))}
             </div>
-
-            <style jsx>{`
-        .tabs {
-          class="inline-flex"
-        }
-        .tab {
-          padding: 10px 20px;
-          cursor: pointer;
-          border: 1px solid #ccc;
-          background: #f9f9f9;
-        }
-        .tab.active {
-          background: #ddd;
-        }
-        .pane {
-          display: none;
-        }
-        .pane.visible {
-          display: block;
-        }
-      `}</style>
         </div>
     );
 };
 
-export default REplayDataTabsView;
+export default ReplayDataTabsView;

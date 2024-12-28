@@ -5,7 +5,7 @@ import ReplayYouTubeView from "../ReplayYoutubeView";
 import ReplayDataTabsView from "./ReplayDataTabs";
 import PlayerInteractionsTab from "../PlayerInteractions/PlayerInteractionsTab";
 import { useSearchParams } from 'next/navigation'
-import { useRouter } from 'next/compat/router'
+import ReplayControls from "./ReplayControls";
 
 type ReplayTimelineView = {
     actStNames: ActStName[]
@@ -16,8 +16,11 @@ type ReplayTimelineView = {
 
 const ReplayTimelineView = ({ actStNames, mActionNames, cfnReplay, replayInteractions }: ReplayTimelineView) => {
     const searchParams = useSearchParams();
-    const router = useRouter(); 
     const searchSeconds = Number(searchParams?.get('t')) || 0;
+    const roundKeys = Object.keys(cfnReplay.replayData.replayRounds)
+        .map(Number)
+        .sort((a, b) => a - b);
+        
 
     const [currentSecond, setSeconds] = useState<number>(searchSeconds);
     const [currentFrame, setFrame] = useState<number>(0);
@@ -64,7 +67,7 @@ const ReplayTimelineView = ({ actStNames, mActionNames, cfnReplay, replayInterac
     };
     
     return (
-        <div>
+        <div className="p-2">
             <div className="flex space-x-4">
                 <div className="w-2/4">
                     <ReplayYouTubeView 
@@ -74,12 +77,17 @@ const ReplayTimelineView = ({ actStNames, mActionNames, cfnReplay, replayInterac
                         
                     />
                 </div>
-                <button onClick={handleShareClick}>Share</button>
                 <div className="w-3/4 pr-10">
+                    <div className="flex flex-row">
+                        <ReplayControls 
+                            roundKeys={roundKeys}
+                            currentRound={currentRound} 
+                            handleTabClick={handleTabClick}           
+                        />
+                        <button onClick={handleShareClick}>Share</button>
+                    </div>
                     <PlayerInteractionsTab
-                        roundData={cfnReplay.replayData.replayRounds}
-                        characters={cfnReplay.characters} 
-                        actStNames={actStNames}
+                        cfnReplay={cfnReplay}
                         mActionNames={mActionNames}
                         currentFrame={currentFrame}
                         activeTab={currentRound}
@@ -88,8 +96,9 @@ const ReplayTimelineView = ({ actStNames, mActionNames, cfnReplay, replayInterac
                     />
                 </div>
             </div>
-            <div className="flex space-x-4">
-                <ReplayDataTabsView 
+            <div className="flex space-x-4 p-2">
+                <ReplayDataTabsView
+                    roundKeys={roundKeys} 
                     actStNames={actStNames}
                     mActionNames={mActionNames}
                     cfnReplay={cfnReplay}
