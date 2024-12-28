@@ -18,11 +18,19 @@ const MoveMapping = ({ moveId, characterMoveMappings, onMappingChange }: MoveMap
         }
     };
 
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Enter") {
+            const inputElement = event.target as HTMLInputElement;
+            onMoveNameChange(inputElement.value);
+        }
+    };
+
     return (
         <div>
             <input list="move-options" 
                 //value={moveMapping ? (moveMapping.moveName):('')}
                 onBlur={(e) => onMoveNameChange(e.target.value)}
+                onKeyDown={handleKeyDown}
                 defaultValue={characterMoveMappings.get(moveId)?.moveName || ("")}
                 className="w-full max-w-full box-border overflow-hidden text-ellipsis"
             />
