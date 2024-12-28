@@ -107,7 +107,7 @@ export const getCFNReplay = async (cfnReplayId: string): Promise<CFNReplay> => {
                     move_mapping_id: moveNameMappings.find(
                         (mapping: MoveNameMapping) =>
                             mapping.actSt === row[`p${player}_act_st` as `p${0 | 1}_act_st`] &&
-                            mapping.characterId === characters[0]?.id &&
+                            mapping.characterId === characters[player]?.id &&
                             mapping.mActionId === row[`p${player}_mactionid` as `p${0 | 1}_mactionid`]
                     )?.id
                 };

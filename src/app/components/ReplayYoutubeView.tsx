@@ -55,7 +55,6 @@ const ReplayYouTubeView = ({ youtubeVideoID, currentSecond, onTimeUpdate }: Repl
 
         return () => {
             if (player) {
-                console.log("time to die");
                 player.destroy(); 
                 setPlayer(null); // Ensure no lingering reference
             }
@@ -67,7 +66,9 @@ const ReplayYouTubeView = ({ youtubeVideoID, currentSecond, onTimeUpdate }: Repl
             if (currentSecond >= 0) {
                 const currentTime = Math.floor(player.getCurrentTime());
                 if (Math.abs(currentTime - currentSecond) > 0) {
+                    player.pauseVideo();
                     player.seekTo(currentSecond, true);
+                    player.playVideo();
                 }
             }
         }

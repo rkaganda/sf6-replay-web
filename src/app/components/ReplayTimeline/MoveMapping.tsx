@@ -13,7 +13,6 @@ const MoveMapping = ({ moveId, characterMoveMappings, onMappingChange }: MoveMap
     
         if (move && newMoveName !== move.moveName) {
             onMappingChange({ ...move, moveName: newMoveName }, moveId);
-            console.log("onMoveNameChange")
         } else if (!move) {
             console.warn(`Move with ID ${moveId} not found in characterMoveMappings.`);
         }
@@ -25,12 +24,9 @@ const MoveMapping = ({ moveId, characterMoveMappings, onMappingChange }: MoveMap
                 //value={moveMapping ? (moveMapping.moveName):('')}
                 onBlur={(e) => onMoveNameChange(e.target.value)}
                 defaultValue={characterMoveMappings.get(moveId)?.moveName || ("")}
-                style={{
-                    width: "80px",
-                    boxSizing: "border-box", 
-                }}
+                className="w-full max-w-full box-border overflow-hidden text-ellipsis"
             />
-            <datalist id="move-options">
+            {/* <datalist id="move-options">
                 {Object.values(characterMoveMappings).map((mapping) => (
                     mapping.moveName.length > 0 && (
                         <option key={mapping.id} value={mapping.moveName}>
@@ -38,7 +34,7 @@ const MoveMapping = ({ moveId, characterMoveMappings, onMappingChange }: MoveMap
                         </option>
                     )
                 ))}
-            </datalist>
+            </datalist> */}
         </div>
     );
 };

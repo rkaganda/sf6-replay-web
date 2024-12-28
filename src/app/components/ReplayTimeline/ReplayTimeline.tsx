@@ -1,17 +1,25 @@
 'use client'
-import { ActStName, CFNReplay, MActionName } from "@/lib/types";
+import { ActStName, CFNReplay, MActionName, ReplayInteractions } from "@/lib/types";
 import { useState } from "react";
 import ReplayYouTubeView from "../ReplayYoutubeView";
 import ReplayDataTabsView from "./ReplayDataTabs";
+import PlayerInteractionsTab from "../PlayerInteractions/PlayerInteractionsTab";
+import { useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/compat/router'
 
 type ReplayTimelineView = {
     actStNames: ActStName[]
     mActionNames: { 0: MActionName[]; 1: MActionName[]; }
-    cfnReplay: CFNReplay
+    cfnReplay: CFNReplay,
+    replayInteractions: ReplayInteractions
 };
 
-const ReplayTimelineView = ({ actStNames, mActionNames, cfnReplay }: ReplayTimelineView) => {
-    const [currentSecond, setSeconds] = useState<number>(0);
+const ReplayTimelineView = ({ actStNames, mActionNames, cfnReplay, replayInteractions }: ReplayTimelineView) => {
+    const searchParams = useSearchParams();
+    const router = useRouter(); 
+    const searchSeconds = Number(searchParams?.get('t')) || 0;
+
+    const [currentSecond, setSeconds] = useState<number>(searchSeconds);
     const [currentFrame, setFrame] = useState<number>(0);
     const [currentRound, setRound] = useState<number>(0);
 
@@ -42,19 +50,55 @@ const ReplayTimelineView = ({ actStNames, mActionNames, cfnReplay }: ReplayTimel
         setSeconds(newSecond);
         setRound(roundNumber);
     }
+
+    const handleShareClick = () => {
+        const currentUrl = window.location.href.split('?')[0]; 
+        const shareUrl = `${currentUrl}?t=${currentSecond}`; 
+        navigator.clipboard.writeText(shareUrl)
+            .then(() => {
+                alert('Link copied to clipboard!');
+            })
+            .catch(() => {
+                alert('Failed to copy the link.');
+            });
+    };
     
     return (
         <div>
-            <ReplayYouTubeView youtubeVideoID={cfnReplay.replayData.youtubeVideoId} currentSecond={currentSecond} onTimeUpdate={handleTimeUpdate}/>
-            <ReplayDataTabsView 
-                actStNames={actStNames}
-                mActionNames={mActionNames}
-                cfnReplay={cfnReplay}
-                currentFrame={currentFrame} 
-                activeTab={currentRound} 
-                handleTabClick={handleTabClick} 
-                handleFrameClick={handleFrameClick}
-                />
+            <div className="flex space-x-4">
+                <div className="w-2/4">
+                    <ReplayYouTubeView 
+                        youtubeVideoID={cfnReplay.replayData.youtubeVideoId} 
+                        currentSecond={currentSecond} 
+                        onTimeUpdate={handleTimeUpdate}
+                        
+                    />
+                </div>
+                <button onClick={handleShareClick}>Share</button>
+                <div className="w-3/4 pr-10">
+                    <PlayerInteractionsTab
+                        roundData={cfnReplay.replayData.replayRounds}
+                        characters={cfnReplay.characters} 
+                        actStNames={actStNames}
+                        mActionNames={mActionNames}
+                        currentFrame={currentFrame}
+                        activeTab={currentRound}
+                        handleFrameClick={handleFrameClick} 
+                        replayInteractions={replayInteractions}   
+                    />
+                </div>
+            </div>
+            <div className="flex space-x-4">
+                <ReplayDataTabsView 
+                    actStNames={actStNames}
+                    mActionNames={mActionNames}
+                    cfnReplay={cfnReplay}
+                    currentFrame={currentFrame} 
+                    activeTab={currentRound} 
+                    handleTabClick={handleTabClick} 
+                    handleFrameClick={handleFrameClick}
+                    />
+            </div>
         </div>
     );
 };

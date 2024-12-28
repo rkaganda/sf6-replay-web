@@ -27,7 +27,7 @@ const REplayDataTabsView = ({
         .sort((a, b) => a - b);
         
     return (
-        <div className="container mx-auto p-2">
+        <div>
             <div className="tabs">
                 {roundsKeys.map((roundNumber) => (
                     <button
@@ -35,11 +35,10 @@ const REplayDataTabsView = ({
                         className={`tab ${activeTab === roundNumber ? "active" : ""}`}
                         onClick={() => handleTabClick(roundNumber)}
                     >
-                        Round {roundNumber}
+                        Round {roundNumber+1}
                     </button>
                 ))}
             </div>
-
             <div className="tab-content">
                 {roundsKeys.map((roundNumber) => (
                     <div

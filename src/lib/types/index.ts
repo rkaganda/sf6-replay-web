@@ -130,3 +130,40 @@ export type StanceName = {
     id: number
     name: string
 }
+
+export type dbPlayerInteraction = {
+    target_player: number,
+    round_number: number,
+    start_frame: number,
+    end_frame: number,
+    player_id: number,
+    start_time: number,
+    end_time: number,
+    type: string,
+    p0_hp_change: number,
+    p0_super_change: number,
+    p0_drive_change: number,
+    p1_hp_change: number,
+    p1_super_change: number,
+    p1_drive_change: number,
+  }
+
+export type InteractionChange = {
+    hp_change: number
+    drive_change: number
+    super_change: number
+}
+
+export type ReplayInteractions = {
+    round: {[round_number: number]: PlayerInteraction[] }
+}
+
+export type PlayerInteraction = {
+    change: { [player: number]: InteractionChange };
+    target_player: number
+    start_frame: number
+    end_frame: number
+    start_time: number,
+    end_time: number,
+    type: string
+}
