@@ -30,8 +30,9 @@ const PlayerInteractionRow = ({
     }
 
     const getMoveName = (player: 0|1) => {
-        const moveName = characters[player].moveMapping.get(replayFrames[playerInteraction.start_frame][player].move_mapping_id)?.moveName;
-        const mActionId = replayFrames[playerInteraction.start_frame-interactionStateBacktrack][player].mactionid;
+        const backtrackFrame = playerInteraction.start_frame-interactionStateBacktrack
+        const moveName = characters[player].moveMapping.get(replayFrames[backtrackFrame][player].move_mapping_id)?.moveName;
+        const mActionId = replayFrames[backtrackFrame][player].mactionid;
         const mActionName = getMActionName(mActionId, player);
 
         return (moveName?.length||0>0 ? moveName : mActionName)
