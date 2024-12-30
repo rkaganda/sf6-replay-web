@@ -5,23 +5,23 @@ import ReplayTimelineTable from "./ReplayFrameTable";
 type ReplayDataTabsViewProps = {
     cfnReplay: CFNReplay,
     currentFrame: number;
-    activeTab: number;
-    handleTabClick: (currentTime: number) => void;
-    handleFrameClick: (round: number, frame: number) => void;
+    currentRound: number;
+    handleFrameClick: (frame: number) => void;
     actStNames: ActStName[];
     mActionNames: { 0: MActionName[]; 1: MActionName[]; };
     roundKeys: number[];
+    autoScroll: boolean;
 }
 
 const ReplayDataTabsView = ({ 
     cfnReplay, 
     currentFrame, 
-    activeTab, 
-    handleTabClick, 
+    currentRound, 
     handleFrameClick,
     actStNames,
     mActionNames,
     roundKeys,
+    autoScroll
 }: ReplayDataTabsViewProps) => {
 
     return (
@@ -30,18 +30,20 @@ const ReplayDataTabsView = ({
                 {roundKeys.map((roundNumber) => (
                     <div
                         key={roundNumber}
-                        className={`pane ${activeTab === roundNumber ? "visible" : "hidden"}`}
+                        className={`pane ${currentRound === roundNumber ? "visible" : "hidden"}`}
                     >
                         <ReplayTimelineTable 
                             actStNames={actStNames}
                             mActionNames={mActionNames}
                             roundData={cfnReplay.replayData.replayRounds[roundNumber]}
                             roundTiming={cfnReplay.replayData.replayRounds[roundNumber].timings}
-                            characters={cfnReplay.characters} 
-                            cfnPlayers={cfnReplay.cfnPlayers} 
+                            characters={cfnReplay.characters}
+                            cfnPlayers={cfnReplay.cfnPlayers}
                             tableRound={roundNumber}
-                            activeFrame={currentFrame} 
+                            currentFrame={currentFrame}
                             handleFrameClick={handleFrameClick}
+                            autoScroll={autoScroll} 
+                            currentRound={currentRound}                        
                         />
                     </div>
                 ))}

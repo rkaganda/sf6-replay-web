@@ -1,16 +1,17 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 
 type ReplayYouTubeViewProps = {
     youtubeVideoID: string;
-    currentSecond: number;
+    playerTime: number;
+    playerActualTime: RefObject<number>;
     onTimeUpdate: (currentTime: number) => void;
+    onPlayerStateChange?: (state: number) => void;
 };
 
-const ReplayYouTubeView = ({ youtubeVideoID, currentSecond, onTimeUpdate }: ReplayYouTubeViewProps) => {
+const ReplayYouTubeView = ({ youtubeVideoID, playerTime, onTimeUpdate, onPlayerStateChange, playerActualTime }: ReplayYouTubeViewProps) => {
     const [player, setPlayer] = useState<any>(null);
-    const [playerPaused, setPlayerPause] = useState<boolean>(false);
 
     useEffect(() => {
         const scriptId = 'youtube-player-script';
@@ -28,16 +29,20 @@ const ReplayYouTubeView = ({ youtubeVideoID, currentSecond, onTimeUpdate }: Repl
                 videoId: youtubeVideoID,
                 events: {
                     onReady: (event: any) => {
-                        if (currentSecond >= 0) {
-                            event.target.seekTo(currentSecond, true);
+                        if (playerTime >= 0) {
+                            event.target.seekTo(playerTime, true);
                         }
                     },
                     onStateChange: (event: any) => {
+                        if (onPlayerStateChange) {
+                            onPlayerStateChange(event.data);
+                        }
                         if (event.data === (window as any).YT.PlayerState.PLAYING) {
+                            const currentTime = Math.floor(newPlayer?.getCurrentTime());
+                            onTimeUpdate(currentTime);
                             const interval = setInterval(() => {
                                 const currentTime = Math.floor(newPlayer?.getCurrentTime() || 0);
                                 onTimeUpdate(currentTime);
-                                setPlayerPause(false)
                             }, 1000);
 
                             const stopInterval = () => clearInterval(interval);
@@ -46,7 +51,7 @@ const ReplayYouTubeView = ({ youtubeVideoID, currentSecond, onTimeUpdate }: Repl
                                     stopInterval();
                                 }
                             });
-                        } 
+                        }
                     },
                 },
             });
@@ -57,29 +62,23 @@ const ReplayYouTubeView = ({ youtubeVideoID, currentSecond, onTimeUpdate }: Repl
 
         return () => {
             if (player) {
-                player.destroy(); 
-                setPlayer(null); // Ensure no lingering reference
+                player.destroy();
+                setPlayer(null);
             }
         };
-    }, [youtubeVideoID]); 
+    }, [youtubeVideoID]);
 
     useEffect(() => {
         if (player && typeof player.getCurrentTime === "function" && typeof player.seekTo === "function") {
-            if (currentSecond >= 0) {
-                const currentTime = Math.floor(player.getCurrentTime());
-                if (Math.abs(currentTime - currentSecond) > 0) {
-                    const prevState:number = player.getPlayerState();
-                    player.pauseVideo();
-                    player.seekTo(currentSecond, true);
-                    if (prevState===1 || prevState===3) {
-                        player.playVideo();
-                    }
-                }
+            if (playerActualTime.current != playerTime) {
+                player.seekTo(playerTime, true);
             }
         }
-    }, [player, currentSecond]);
+    }, [player, playerTime, playerActualTime.current]);
 
-    return <div id="ytplayer"></div>;
+    return <div className="aspect-video">
+        <div id="ytplayer" className="w-full h-full" />
+    </div>;
 };
 
 export default ReplayYouTubeView;

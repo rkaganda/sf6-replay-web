@@ -2,7 +2,7 @@ import { CFNReplayFrameData, MActionName, MoveNameMapping, PlayerInteraction, SF
 
 type PlayerInteractionRowProps = {
     playerInteraction: PlayerInteraction;
-    handleFrameClick: (currentFrame: number) => void;
+    snapToFrame: (newFrame: number) => void;
     characters: {[player: number]: SF6Character};
     replayFrames: { [frame: number]: {[player: number]: CFNReplayFrameData }};
     mActionNames: { 0: MActionName[]; 1: MActionName[]; };
@@ -10,18 +10,14 @@ type PlayerInteractionRowProps = {
 
 const PlayerInteractionRow = ({ 
     playerInteraction, 
-    handleFrameClick,
+    snapToFrame,
     characters, 
     replayFrames, 
     mActionNames  
 }: PlayerInteractionRowProps) => {
     const interactionStateBacktrack: number = 2;
-    const interactionFrameBacktrack: number = 180;
+    const interactionFrameBacktrack: number = 190;
 
-    const handleRowClick = (startFrame:number) => {
-        const newFrame = startFrame - interactionFrameBacktrack
-        handleFrameClick(newFrame)
-    }
     const toNormalizeLowerCase = (str: string): string => {
         return str.charAt(0) + str.slice(1).toLowerCase();
     };
@@ -48,7 +44,7 @@ const PlayerInteractionRow = ({
     return (
         <tr 
             className="interaction-row"
-            onClick={() => handleRowClick(playerInteraction.start_frame)}
+            onClick={() => snapToFrame(playerInteraction.start_frame)}
         >
             {/* Player 1 Data */}
             <td className=" text-red-500 text-center">

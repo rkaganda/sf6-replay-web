@@ -1,10 +1,10 @@
-type ReplayControlsProps = {
+type RoundControlsProps = {
     currentRound: number;
     roundKeys: number[];
     handleTabClick: (roundNumber: number) => (void)
 }
 
-const ReplayControls = ({currentRound, roundKeys, handleTabClick }: ReplayControlsProps) => {
+const RoundControls = ({currentRound, roundKeys, handleTabClick }: RoundControlsProps) => {
 
     return (
         <div className="p-2">
@@ -21,4 +21,4 @@ const ReplayControls = ({currentRound, roundKeys, handleTabClick }: ReplayContro
     )
 }
 
-export default ReplayControls;
+export default RoundControls;

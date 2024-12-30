@@ -1,25 +1,23 @@
 'use client'
-import { ActStName, CFNReplay, CFNReplayRounds, MActionName, ReplayInteractions, SF6Character } from "../../../lib/types";
+import { CFNReplay, MActionName, ReplayInteractions } from "../../../lib/types";
 import PlayerInteractionTable from "./PlayerInteractionsTable";
 
 type PlayerInteractionsTabProps = {
-    currentFrame: number;
-    activeTab: number;
+    currentRound: number;
     replayInteractions: ReplayInteractions
-    handleFrameClick: (round: number, frame: number) => void;
+    snapToRoundFrame: (round: number, frame: number) => void;
     mActionNames: { 0: MActionName[]; 1: MActionName[]; };
     cfnReplay: CFNReplay;
 }
 
 const PlayerInteractionsTab = ({ 
-    currentFrame, 
-    activeTab, 
-    handleFrameClick,
+    currentRound, 
+    snapToRoundFrame,
     mActionNames,
     replayInteractions,
     cfnReplay
 }: PlayerInteractionsTabProps) => {
-    
+
     const roundsKeys = Object.keys(replayInteractions.round)
         .map(Number)
         .sort((a, b) => a - b);
@@ -30,14 +28,15 @@ const PlayerInteractionsTab = ({
                 {roundsKeys.map((roundNumber) => (
                     <div
                         key={roundNumber+"_interaction"}
-                        className={`pane ${activeTab === roundNumber ? "visible" : "hidden"}`}
+                        className={`pane ${currentRound === roundNumber ? "visible" : "hidden"}`}
                     >
                         <PlayerInteractionTable
                             cfnPlayers={cfnReplay.cfnPlayers}
                             mActionNames={mActionNames}
                             replayFrames={cfnReplay.replayData.replayRounds[roundNumber].frames}
+                            roundNumber={roundNumber}
                             characters={cfnReplay.characters}
-                            handleFrameClick = {(frame: number) => handleFrameClick(roundNumber, frame)} 
+                            snapToRoundFrame={snapToRoundFrame} 
                             roundInteractions={replayInteractions.round[roundNumber]}
                         />
                     </div>

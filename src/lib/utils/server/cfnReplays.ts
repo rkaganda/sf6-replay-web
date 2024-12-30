@@ -73,7 +73,7 @@ export const getCFNReplay = async (cfnReplayId: string): Promise<CFNReplay> => {
                     replayRounds[roundNumber] = {
                         frames: {},
                         timings: {
-                            startFrame: 0,
+                            startFrame: Infinity,
                             endFrame: 0,
                             startTime: youtubeInfo?.round_start_time_seconds ?? 0,
                             endTime: 0,
@@ -124,6 +124,7 @@ export const getCFNReplay = async (cfnReplayId: string): Promise<CFNReplay> => {
             const roundTimeLength = (round.timings.endFrame - round.timings.startFrame) / 60;
             round.timings.endTime = round.timings.startTime + roundTimeLength;
         });
+        
 
         const replayData: ReplayData = {
             replayRounds,

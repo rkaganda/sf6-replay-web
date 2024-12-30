@@ -3,21 +3,28 @@ import PlayerInteractionRow from "./PlayerInteractionRow";
 
 type PlayerInteractionsTableProps = {
     roundInteractions: PlayerInteraction[]; 
-    handleFrameClick: (frame: number) => (void);
+    snapToRoundFrame: (newRound: number, newFrame: number) => (void);
     characters: {[player: number]: SF6Character};
     replayFrames: { [frame: number]: {[player: number]: CFNReplayFrameData }},
     mActionNames: { 0: MActionName[]; 1: MActionName[]; };
-    cfnPlayers: {[player: number]: CFNUser}
+    cfnPlayers: {[player: number]: CFNUser},
+    roundNumber: number
 }
 
 const PlayerInteractionTable = ({
     roundInteractions, 
-    handleFrameClick, 
+    snapToRoundFrame, 
     characters, 
     replayFrames, 
     mActionNames,
-    cfnPlayers
+    cfnPlayers,
+    roundNumber
 }: PlayerInteractionsTableProps) => {
+
+    const snapToFrame = (newFrame: number) => {
+        snapToRoundFrame(roundNumber, newFrame);
+    }
+
     return (
         <div className="overflow-y-auto box-border h-80 w-128">
             <table className="table-fixed w-full border-collapse interaction-table">
@@ -61,7 +68,7 @@ const PlayerInteractionTable = ({
                             mActionNames={mActionNames} 
                             replayFrames={replayFrames}
                             characters={characters}
-                            handleFrameClick={handleFrameClick}
+                            snapToFrame={snapToFrame}
                             playerInteraction={pInteraction} key={index}
                         />
                     ))}
