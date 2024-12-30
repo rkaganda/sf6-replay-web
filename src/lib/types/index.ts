@@ -37,9 +37,14 @@ export type CFNUser = {
 }
 
 export type CFNReplay = {
+    info: CFNReplayInfo,
+    replayData: ReplayData
+}
+
+export type CFNReplayInfo = {
+    replayId: string;
     characters: { [player: number]: SF6Character },
     cfnPlayers: { [player: number]: CFNUser },
-    replayData: ReplayData
 }
 
 export type CFNRawReplayData = {

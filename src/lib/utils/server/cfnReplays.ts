@@ -132,34 +132,37 @@ export const getCFNReplay = async (cfnReplayId: string): Promise<CFNReplay> => {
         };
         
         return {
-            characters: {
-                0: {
-                    id: characters[0].id,
-                    name: characters[0].name,
-                    moveMapping: new Map(
-                        moveNameMappings
-                            .filter((mapping: MoveNameMapping) => mapping.characterId === characters[0].id)
-                            .map((mapping: MoveNameMapping) => [mapping.id, mapping]) 
-                    )
+            info: {
+                replayId: cfnReplayId,
+                characters: {
+                    0: {
+                        id: characters[0].id,
+                        name: characters[0].name,
+                        moveMapping: new Map(
+                            moveNameMappings
+                                .filter((mapping: MoveNameMapping) => mapping.characterId === characters[0].id)
+                                .map((mapping: MoveNameMapping) => [mapping.id, mapping]) 
+                        )
+                    },
+                    1: {
+                        id: characters[1].id,
+                        name: characters[1].name,
+                        moveMapping: new Map(
+                            moveNameMappings
+                                .filter((mapping: MoveNameMapping) => mapping.characterId === characters[1].id)
+                                .map((mapping: MoveNameMapping) => [mapping.id, mapping]) 
+                        )
+                    },
                 },
-                1: {
-                    id: characters[1].id,
-                    name: characters[1].name,
-                    moveMapping: new Map(
-                        moveNameMappings
-                            .filter((mapping: MoveNameMapping) => mapping.characterId === characters[1].id)
-                            .map((mapping: MoveNameMapping) => [mapping.id, mapping]) 
-                    )
-                },
-            },
-            cfnPlayers: {
-                0: {
-                    id: Number(player0.id),
-                    cfnNames: player0.cfn_user_names.map((name: { cfn_name: string; }) => name.cfn_name),
-                },
-                1: {
-                    id: Number(player1.id),
-                    cfnNames: player1.cfn_user_names.map((name: { cfn_name: string; }) => name.cfn_name),
+                cfnPlayers: {
+                    0: {
+                        id: Number(player0.id),
+                        cfnNames: player0.cfn_user_names.map((name: { cfn_name: string; }) => name.cfn_name),
+                    },
+                    1: {
+                        id: Number(player1.id),
+                        cfnNames: player1.cfn_user_names.map((name: { cfn_name: string; }) => name.cfn_name),
+                    },
                 },
             },
             replayData,

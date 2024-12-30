@@ -10,8 +10,8 @@ export default async function Page({ params }: { params: Promise<{ cfn_replay_id
         const cfnReplay = await getCFNReplay(cfn_replay_id);
         const actStNames = await getActStNames();
         const mActionNames = {
-            0: await getMActionNames(Number(cfnReplay.characters[0].id)),
-            1: await getMActionNames(Number(cfnReplay.characters[1].id))
+            0: await getMActionNames(Number(cfnReplay.info.characters[0].id)),
+            1: await getMActionNames(Number(cfnReplay.info.characters[1].id))
         }
         const replayInteractions = await getReplayInteractions(cfn_replay_id);
 

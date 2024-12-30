@@ -31,11 +31,11 @@ const PlayerInteractionsTab = ({
                         className={`pane ${currentRound === roundNumber ? "visible" : "hidden"}`}
                     >
                         <PlayerInteractionTable
-                            cfnPlayers={cfnReplay.cfnPlayers}
+                            cfnPlayers={cfnReplay.info.cfnPlayers}
                             mActionNames={mActionNames}
                             replayFrames={cfnReplay.replayData.replayRounds[roundNumber].frames}
                             roundNumber={roundNumber}
-                            characters={cfnReplay.characters}
+                            characters={cfnReplay.info.characters}
                             snapToRoundFrame={snapToRoundFrame} 
                             roundInteractions={replayInteractions.round[roundNumber]}
                         />
