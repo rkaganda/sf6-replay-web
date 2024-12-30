@@ -3,6 +3,7 @@ import { getActStNames } from '@/lib/utils/server/actSt';
 import { getCFNReplay } from '@/lib/utils/server/cfnReplays';
 import { getMActionNames } from '@/lib/utils/server/mActionNames';
 import { getReplayInteractions } from '@/lib/utils/server/replayInteractions';
+import Link from "next/link";
 
 export default async function Page({ params }: { params: Promise<{ cfn_replay_id: string }> }) {
     try {
@@ -19,14 +20,16 @@ export default async function Page({ params }: { params: Promise<{ cfn_replay_id
             <div className="min-h-screen sm:p-2 font-[family-name:var(--font-geist-sans)]">
                 <main className="flex flex-col sm:items-start">
                     <div>
-                        <p>CFN Replay ID: {cfn_replay_id} YouTube Video ID: {cfnReplay.replayData.youtubeVideoId}</p>
+                        <p><Link href={`/`}>Home</Link> CFN Replay ID: {cfn_replay_id} YouTube Video ID: {cfnReplay.replayData.youtubeVideoId}</p>
                         <ReplayTimelineView
                             actStNames={actStNames}
                             mActionNames={mActionNames}
                             cfnReplay={cfnReplay}
                             replayInteractions={replayInteractions}
                         />
+                        
                     </div>
+                    
                 </main>
                 <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
                 </footer>

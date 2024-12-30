@@ -12,7 +12,7 @@ export default function CFNReplayItem({ replay }: CFNReplayItemProps) {
     return (
         <Link
             href={`/replay/timeline/${replay.replayId}`}
-            className="tab flex flex-row items-center justify-around p-4 m-2 rounded-md transition-colors duration-200 bg-stone-900 hover:cursor-pointer hover:bg-stone-700"
+            className="tab flex flex-row items-center justify-around p-4 m-2 rounded-md transition-colors duration-200 bg-stone-900 hover:cursor-pointer hover:bg-stone-700 drop-shadow-xl"
         >
             {/* left player info */}
             <div className="flex flex-col items-center">
