@@ -77,7 +77,9 @@ const ReplayYouTubeView = ({ youtubeVideoID, playerTime, onTimeUpdate, onPlayerS
     }, [player, playerTime, playerActualTime.current]);
 
     return <div className="aspect-video">
-        <div id="ytplayer" className="w-full h-full" />
+        <div id="ytplayer" className="w-full h-full" >
+        if player doesn't load, reload page
+        </div>
     </div>;
 };
 
