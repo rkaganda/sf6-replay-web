@@ -3,6 +3,7 @@
 import React from "react";
 import { CFNReplayInfo } from "@/lib/types";
 import Link from "next/link";
+import Image from 'next/image'
 
 type CFNReplayItemProps = {
     replay: CFNReplayInfo;
@@ -16,10 +17,12 @@ export default function CFNReplayItem({ replay }: CFNReplayItemProps) {
         >
             {/* left player info */}
             <div className="flex flex-col items-center">
-                <img
+                <Image
                     src={`/characters/56px-SF6_${replay.characters[0].name}_Icon.png`}
                     alt={replay.characters[0].name}
                     className="w-[56px] h-[56px]"
+                    width={59}
+                    height={56}
                 />
                 <p className="text-sm text-[rgba(255,255,255,0.9)] mt-2">
                     {replay.cfnPlayers[0].cfnNames[0] || "unknown"}
