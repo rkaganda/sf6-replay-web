@@ -42,10 +42,12 @@ export default function CFNReplayItem({ replay }: CFNReplayItemProps) {
 
             {/* right player info */}
             <div className="flex flex-col items-center">
-                <img
+                <Image
                     src={`/characters/56px-SF6_${replay.characters[1].name}_Icon.png`}
                     alt={replay.characters[1].name}
                     className="w-[56px] h-[56px]"
+                    width={59}
+                    height={56}
                 />
                 <p className="text-sm text-[rgba(255,255,255,0.9)] mt-2">
                     {replay.cfnPlayers[1].cfnNames[0] || "unknown"}

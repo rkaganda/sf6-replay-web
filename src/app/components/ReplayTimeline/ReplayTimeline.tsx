@@ -39,6 +39,7 @@ const ReplayTimelineView = ({ actStNames, mActionNames, cfnReplay, replayInterac
 
     const handePlayerUpdate = (newTime: number) => {
         if ((playerStateRef.current===1 || playerStateRef.current===3)) {
+            playerActualTime.current = newTime;
             if(!userControlRef.current) {
                 for (const roundNumber in cfnReplay.replayData.replayRounds) {
                     const range = cfnReplay.replayData.replayRounds[roundNumber].timings;
@@ -49,11 +50,13 @@ const ReplayTimelineView = ({ actStNames, mActionNames, cfnReplay, replayInterac
                             setRound(Number(roundNumber));
                         }
                         setPlayerFrame(playerFrame);
-                        playerActualTime.current = newTime;
                         setPlayerTime(newTime)
                         break;
                     }
                 }
+            } else {
+                setUserControl(false);
+                userControlRef.current = false;
             }
         }
     };
@@ -78,14 +81,15 @@ const ReplayTimelineView = ({ actStNames, mActionNames, cfnReplay, replayInterac
     };
 
     const handleFrameClick = (newFrame: number) => {
-        const error = new Error();
         console.trace();
         setUserControl(true);
         userControlRef.current = true;
 
         setCurrentFrame(newFrame)
         if (!autoScroll) {
-            setPlayerTime(calcuateNewSecondFromRoundFrame(currentRound, newFrame))
+            const newPlayerTime = calcuateNewSecondFromRoundFrame(currentRound, newFrame);
+
+            setPlayerTime(newPlayerTime)
         }
     }
 
@@ -131,7 +135,7 @@ const ReplayTimelineView = ({ actStNames, mActionNames, cfnReplay, replayInterac
             }, 1100); 
             return () => clearTimeout(timer);
         }
-    }, [currentRound, currentFrame])
+    }, [currentRound, currentFrame, userControl])
     
     return (
         <div className="p-2">

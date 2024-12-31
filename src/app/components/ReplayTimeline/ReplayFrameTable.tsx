@@ -89,7 +89,7 @@ const ReplayTimelineTable = ({
                 setStartIndex(targetIndex);
             }    
         }
-    }, [currentFrame, rowsPerPage]);
+    }, [currentFrame, rowsPerPage, roundTiming.startFrame]);
 
     useEffect(() => {
         if (currentRound===tableRound && viewportRef.current) {

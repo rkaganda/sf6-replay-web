@@ -29,7 +29,6 @@ export const fetchCFNReplays = (options: FetchCFNReplaysOptions = {}) => {
   
     const queryString = params.toString();
     const url = `/api/cfnreplays${queryString ? `?${queryString}` : ''}`; 
-    console.log("url=" + url);
   
     return apiRequest(url, 'GET');
   };
