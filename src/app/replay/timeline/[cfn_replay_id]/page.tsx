@@ -1,4 +1,4 @@
-import ReplayTimelineView from '@/app/components/ReplayTimeline/ReplayTimeline';
+import ReplayTimelineView from '@/app/components/ReplayTimelineView';
 import { getActStNames } from '@/lib/utils/server/actSt';
 import { getCFNReplay } from '@/lib/utils/server/cfnReplays';
 import { getMActionNames } from '@/lib/utils/server/mActionNames';
@@ -17,23 +17,16 @@ export default async function Page({ params }: { params: Promise<{ cfn_replay_id
         const replayInteractions = await getReplayInteractions(cfn_replay_id);
 
         return (
-            <div className="min-h-screen sm:p-2 font-[family-name:var(--font-geist-sans)]">
-                <main className="flex flex-col sm:items-start">
-                    <div>
-                        <p><Link href={`/`}>Home</Link> CFN Replay ID: {cfn_replay_id} YouTube Video ID: {cfnReplay.replayData.youtubeVideoId}</p>
-                        <ReplayTimelineView
-                            actStNames={actStNames}
-                            mActionNames={mActionNames}
-                            cfnReplay={cfnReplay}
-                            replayInteractions={replayInteractions}
-                        />
-                        
-                    </div>
-                    
-                </main>
-                <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-                </footer>
-            </div>
+            <main className='items-center'>
+                <div className="min-h-screen sm:p-2 font-[family-name:var(--font-geist-sans)]">
+                    <ReplayTimelineView
+                        actStNames={actStNames}
+                        mActionNames={mActionNames}
+                        cfnReplay={cfnReplay}
+                        replayInteractions={replayInteractions}
+                    />
+                </div>
+            </main>
         );
     } catch (error) {
         console.error('Error reading replay data:', error);

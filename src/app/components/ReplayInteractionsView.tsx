@@ -1,30 +1,29 @@
 'use client'
 import { ActStName, CFNReplay, MActionName, ReplayInteractions } from "@/lib/types";
-import { useEffect, useRef, useState } from "react";
-import ReplayYouTubeView from "../ReplayYoutubeView";
-import ReplayDataTabsView from "./ReplayDataTabs";
-import PlayerInteractionsTab from "../PlayerInteractions/PlayerInteractionsTab";
+
+import ReplayYouTubeView from "./ReplayYoutubeView";
 import { useSearchParams } from 'next/navigation'
-import RoundControls from "./RoundControls"
-import PlayerControls from "./PlayerControls";
+import { useEffect, useRef, useState } from "react";
+import PlayerControls from "./ReplayTimeline/PlayerControls";
+import PlayerInteractionsTab from "./PlayerInteractionsResponsive/PlayerInteractionsTab";
+import RoundControls from "./ReplayTimeline/RoundControls";
 
 
-type ReplayTimelineView = {
+type ReplayInteractionsViewProps = {
     actStNames: ActStName[]
     mActionNames: { 0: MActionName[]; 1: MActionName[]; }
     cfnReplay: CFNReplay,
     replayInteractions: ReplayInteractions
 };
 
-const ReplayTimelineView = ({ actStNames, mActionNames, cfnReplay, replayInteractions }: ReplayTimelineView) => {
+const ReplayInteractionsView = ({ actStNames, mActionNames, cfnReplay, replayInteractions }: ReplayInteractionsViewProps) => {
     const searchParams = useSearchParams();
-    const searchSeconds = Number(searchParams?.get('t')) || 0;
     const roundKeys = Object.keys(cfnReplay.replayData.replayRounds)
         .map(Number)
         .sort((a, b) => a - b);
         
 
-    const [playerTime, setPlayerTime] = useState<number>(searchSeconds);
+    const [playerTime, setPlayerTime] = useState<number>(0);
     const [currentFrame, setCurrentFrame] = useState<number>(0);
     const [playerFrame, setPlayerFrame] = useState<number>(0);
     const [currentRound, setRound] = useState<number>(0);
@@ -138,9 +137,9 @@ const ReplayTimelineView = ({ actStNames, mActionNames, cfnReplay, replayInterac
     }, [currentRound, currentFrame, userControl])
     
     return (
-        <div className="p-2">
-            <div className="flex space-x-4">
-                <div className="w-2/4">
+        <div className="p-2 h-screen flex flex-col">
+            <div>
+                <div className="w-full max-w-3xl mx-auto">
                     <ReplayYouTubeView 
                         youtubeVideoID={cfnReplay.replayData.youtubeVideoId} 
                         playerTime={playerTime}
@@ -148,43 +147,33 @@ const ReplayTimelineView = ({ actStNames, mActionNames, cfnReplay, replayInterac
                         onTimeUpdate={handePlayerUpdate}
                         onPlayerStateChange={handlePlayerStateChange}
                     />
+                </div>
+                <div className="w-full max-w-3xl mx-auto">
                     <PlayerControls 
                         toggleAutoscroll={toggleAutoscroll}
                         autoScroll={autoScroll}
                     />
                 </div>
-                <div className="w-3/4 pr-10">
-                    <div className="flex flex-row">
-                        <RoundControls 
-                            roundKeys={roundKeys}
-                            currentRound={currentRound} 
-                            handleTabClick={handleTabClick}           
-                        />
-                        <button onClick={handleShareClick}>Share</button>
-                    </div>
-                    <PlayerInteractionsTab
-                        cfnReplay={cfnReplay}
-                        mActionNames={mActionNames}
-                        currentRound={currentRound}
-                        snapToRoundFrame={snapToRoundFrame} 
-                        replayInteractions={replayInteractions}   
+            </div>
+            <div className="w-full max-w-3xl mx-auto">
+                    <RoundControls 
+                        roundKeys={roundKeys}
+                        currentRound={currentRound} 
+                        handleTabClick={handleTabClick}           
                     />
+                    <button onClick={handleShareClick}>Share</button>
                 </div>
-            </div>
-            <div className="flex space-x-4 p-2">
-                <ReplayDataTabsView
-                    roundKeys={roundKeys} 
-                    actStNames={actStNames}
-                    mActionNames={mActionNames}
+                <div className="w-full max-w-3xl mx-auto flex-1 overflow-auto">
+                <PlayerInteractionsTab
                     cfnReplay={cfnReplay}
-                    currentFrame={currentFrame} 
-                    currentRound={currentRound} 
-                    handleFrameClick={handleFrameClick}
-                    autoScroll={autoScroll}
-                    />
-            </div>
+                    mActionNames={mActionNames}
+                    currentRound={currentRound}
+                    snapToRoundFrame={snapToRoundFrame} 
+                    replayInteractions={replayInteractions}   
+                />
+            </div> 
         </div>
     );
 };
 
-export default ReplayTimelineView;
+export default ReplayInteractionsView;

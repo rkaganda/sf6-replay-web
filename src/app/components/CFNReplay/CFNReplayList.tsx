@@ -28,7 +28,7 @@ export default function CFNReplayList() {
     }
 
     return (
-        <div className="grid gap-1 sm:p-2 row-span-3 font-[family-name:var(--font-geist-sans)]">
+        <div className="grid gap-1 sm:p-2 row-span-3 font-[family-name:var(--font-geist-sans)] max-w-4xl mx-auto">
             {cfnReplays.map((cfnReplay) => (
                 <CFNReplayItem key={cfnReplay.replayId} replay={cfnReplay} />
             ))}

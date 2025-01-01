@@ -44,6 +44,7 @@ tr{
     cursor: pointer;
     border-radius: 8px; 
     overflow: hidden; 
+    padding: 10px;
 }
 tr:hover {
     background-color:  rgba(36, 36, 36, 0.9); 

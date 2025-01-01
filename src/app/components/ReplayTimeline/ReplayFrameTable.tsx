@@ -26,7 +26,7 @@ type ReplayTimelineTableProps = {
 };
 
 const ROW_HEIGHT = 26;
-const VIEWPORT_HEIGHT = 400;
+const VIEWPORT_HEIGHT = 320;
 const VIEWPORT_WIDTH = 1600 + 70;
 
 const ReplayTimelineTable = ({
