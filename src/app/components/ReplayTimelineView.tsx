@@ -70,7 +70,6 @@ const ReplayTimelineView = ({ actStNames, mActionNames, cfnReplay, replayInterac
         const range = cfnReplay.replayData.replayRounds[newRound].timings;
         const offsetRatio = (newFrame - range.startFrame) / (range.endFrame - range.startFrame);
         const newSecond = Math.round(range.startTime + ((range.endTime - range.startTime) * offsetRatio));
-        console.log(range)
         return newSecond;
     };
 
@@ -83,25 +82,6 @@ const ReplayTimelineView = ({ actStNames, mActionNames, cfnReplay, replayInterac
         userControlRef.current = true;
         setCurrentFrame(cfnReplay.replayData.replayRounds[roundNumber].timings.startFrame);
         setPlayerTime(cfnReplay.replayData.replayRounds[roundNumber].timings.startTime);
-        setRound(roundNumber);
-    };
-
-    const handleEndClick = (roundNumber: number) => {
-        setUserControl(true);
-        userControlRef.current = true;
-        setCurrentFrame(cfnReplay.replayData.replayRounds[roundNumber].timings.endFrame);
-        setPlayerTime(cfnReplay.replayData.replayRounds[roundNumber].timings.endTime);
-        setRound(roundNumber);
-    };
-
-
-    const handleGuessEndClick = (roundNumber: number) => {
-        setUserControl(true);
-        userControlRef.current = true;
-        const roundTimeLength = (cfnReplay.replayData.replayRounds[roundNumber].timings.endFrame - cfnReplay.replayData.replayRounds[roundNumber].timings.startFrame) / 60;
-        const guessEndTime = cfnReplay.replayData.replayRounds[roundNumber].timings.endTime + roundTimeLength;
-        setCurrentFrame(guessEndTime);
-        setPlayerTime(guessEndTime);
         setRound(roundNumber);
     };
 
@@ -120,8 +100,6 @@ const ReplayTimelineView = ({ actStNames, mActionNames, cfnReplay, replayInterac
         userControlRef.current = true;
         setCurrentFrame(newFrame);
         const newTime = calculateNewSecondFromRoundFrame(newRound, newFrame);
-        console.log("newFrame="+newFrame);
-        console.log("newTime="+newTime);
         setPlayerTime(newTime);
     };
 
@@ -185,8 +163,6 @@ const ReplayTimelineView = ({ actStNames, mActionNames, cfnReplay, replayInterac
                     roundKeys={roundKeys}
                     currentRound={currentRound}
                     handleTabClick={handleTabClick}
-                    handleEndClick={handleEndClick}
-                    handleGuessEndClick={handleGuessEndClick}
                 />
                 <button onClick={handleShareClick}>Share</button>
             </div>

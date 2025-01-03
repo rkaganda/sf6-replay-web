@@ -2,11 +2,9 @@ type RoundControlsProps = {
     currentRound: number;
     roundKeys: number[];
     handleTabClick: (roundNumber: number) => (void)
-    handleEndClick: (roundNumber: number) => (void)
-    handleGuessEndClick: (roundNumber: number) => (void)
 }
 
-const RoundControls = ({ currentRound, roundKeys, handleTabClick, handleEndClick, handleGuessEndClick }: RoundControlsProps) => {
+const RoundControls = ({ currentRound, roundKeys, handleTabClick }: RoundControlsProps) => {
 
     return (
         <div className="p-2">
