@@ -15,7 +15,8 @@ export type YoutubeCFNReplay = {
 
 export type VideoReplayTiming = {
     round_number: number,
-    round_start_time_seconds: number
+    round_start_time_seconds: number,
+    round_end_time_seconds: number
 }
 
 export type RoundTimeRanges = {

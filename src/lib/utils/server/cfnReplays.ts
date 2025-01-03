@@ -76,10 +76,11 @@ export const getCFNReplay = async (cfnReplayId: string): Promise<CFNReplay> => {
                             startFrame: Infinity,
                             endFrame: 0,
                             startTime: youtubeInfo?.round_start_time_seconds ?? 0,
-                            endTime: 0,
+                            endTime: youtubeInfo?.round_end_time_seconds ?? 0,
                         },
                     };
                 }
+                
 
                 if (!replayRounds[roundNumber].frames[row.frame]) {
                     replayRounds[roundNumber].frames[row.frame] = {};
@@ -121,8 +122,6 @@ export const getCFNReplay = async (cfnReplayId: string): Promise<CFNReplay> => {
 
             round.timings.startFrame = Math.min(round.timings.startFrame, minFrame);
             round.timings.endFrame = Math.max(round.timings.endFrame, maxFrame);
-            const roundTimeLength = (round.timings.endFrame - round.timings.startFrame) / 60;
-            round.timings.endTime = round.timings.startTime + roundTimeLength;
         });
         
 

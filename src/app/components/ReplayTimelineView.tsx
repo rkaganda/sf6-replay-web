@@ -85,6 +85,25 @@ const ReplayTimelineView = ({ actStNames, mActionNames, cfnReplay, replayInterac
         setRound(roundNumber);
     };
 
+    const handleEndClick = (roundNumber: number) => {
+        setUserControl(true);
+        userControlRef.current = true;
+        setCurrentFrame(cfnReplay.replayData.replayRounds[roundNumber].timings.endFrame);
+        setPlayerTime(cfnReplay.replayData.replayRounds[roundNumber].timings.endTime);
+        setRound(roundNumber);
+    };
+
+
+    const handleGuessEndClick = (roundNumber: number) => {
+        setUserControl(true);
+        userControlRef.current = true;
+        const roundTimeLength = (cfnReplay.replayData.replayRounds[roundNumber].timings.endFrame - cfnReplay.replayData.replayRounds[roundNumber].timings.startFrame) / 60;
+        const guessEndTime = cfnReplay.replayData.replayRounds[roundNumber].timings.endTime + roundTimeLength;
+        setCurrentFrame(guessEndTime);
+        setPlayerTime(guessEndTime);
+        setRound(roundNumber);
+    };
+
     const handleFrameClick = (newFrame: number) => {
         setUserControl(true);
         userControlRef.current = true;
@@ -162,6 +181,8 @@ const ReplayTimelineView = ({ actStNames, mActionNames, cfnReplay, replayInterac
                     roundKeys={roundKeys}
                     currentRound={currentRound}
                     handleTabClick={handleTabClick}
+                    handleEndClick={handleEndClick}
+                    handleGuessEndClick={handleGuessEndClick}
                 />
                 <button onClick={handleShareClick}>Share</button>
             </div>

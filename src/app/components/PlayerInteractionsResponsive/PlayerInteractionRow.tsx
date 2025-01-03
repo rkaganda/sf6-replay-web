@@ -16,7 +16,7 @@ const PlayerInteractionRow = ({
     mActionNames
 }: PlayerInteractionRowProps) => {
     const interactionStateBacktrack: number = 2;
-    const interactionFrameBacktrack: number = 190;
+    const interactionFrameBacktrack: number = 0;
 
     const toNormalizeLowerCase = (str: string): string => {
         return str.charAt(0) + str.slice(1).toLowerCase();
@@ -44,7 +44,7 @@ const PlayerInteractionRow = ({
     return (
         <tr
         className="interaction-row"
-        onClick={() => snapToFrame(playerInteraction.start_frame)}
+        onClick={() => snapToFrame(playerInteraction.start_frame + interactionFrameBacktrack)}
     >
         {/* Player 0 Data */}
         <td>
