@@ -70,6 +70,7 @@ const ReplayTimelineView = ({ actStNames, mActionNames, cfnReplay, replayInterac
         const range = cfnReplay.replayData.replayRounds[newRound].timings;
         const offsetRatio = (newFrame - range.startFrame) / (range.endFrame - range.startFrame);
         const newSecond = Math.round(range.startTime + ((range.endTime - range.startTime) * offsetRatio));
+        console.log(range)
         return newSecond;
     };
 
@@ -118,7 +119,10 @@ const ReplayTimelineView = ({ actStNames, mActionNames, cfnReplay, replayInterac
         setUserControl(true);
         userControlRef.current = true;
         setCurrentFrame(newFrame);
-        setPlayerTime(calculateNewSecondFromRoundFrame(newRound, newFrame));
+        const newTime = calculateNewSecondFromRoundFrame(newRound, newFrame);
+        console.log("newFrame="+newFrame);
+        console.log("newTime="+newTime);
+        setPlayerTime(newTime);
     };
 
     const handleShareClick = () => {

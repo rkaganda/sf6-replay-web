@@ -11,28 +11,13 @@ const RoundControls = ({ currentRound, roundKeys, handleTabClick, handleEndClick
     return (
         <div className="p-2">
             {roundKeys.map((roundNumber) => (
-                <>
-                    <button
-                        key={roundNumber}
-                        className={`tab ${currentRound === roundNumber ? "active" : ""} font-bold py-2 px-4`}
-                        onClick={() => handleTabClick(roundNumber)}
-                    >
-                        Round {roundNumber + 1}
-                    </button>
-                    <button
-                        key={`end-${roundNumber}`}
-                        onClick={() => handleEndClick(roundNumber)}
-                    >
-                        End Round {roundNumber + 1}
-                    </button>
-                    <button
-                        key={`guess-${roundNumber}`}
-                        onClick={() => handleGuessEndClick(roundNumber)}
-                    >
-                        End Round {roundNumber + 1}
-                    </button>
-                </>
-
+                <button
+                    key={roundNumber}
+                    className={`tab ${currentRound === roundNumber ? "active" : ""} font-bold py-2 px-4`}
+                    onClick={() => handleTabClick(roundNumber)}
+                >
+                    Round {roundNumber + 1}
+                </button>
             ))}
         </div>
     )

@@ -16,7 +16,7 @@ const PlayerInteractionRow = ({
     mActionNames
 }: PlayerInteractionRowProps) => {
     const interactionStateBacktrack: number = 2;
-    const interactionFrameBacktrack: number = 0;
+    const interactionFrameBacktrack: number = -15;
 
     const toNormalizeLowerCase = (str: string): string => {
         return str.charAt(0) + str.slice(1).toLowerCase();

@@ -122,6 +122,8 @@ export const getCFNReplay = async (cfnReplayId: string): Promise<CFNReplay> => {
 
             round.timings.startFrame = Math.min(round.timings.startFrame, minFrame);
             round.timings.endFrame = Math.max(round.timings.endFrame, maxFrame);
+            const roundTimeLength = (round.timings.endFrame - round.timings.startFrame) / 60;
+            round.timings.endTime = (round.timings.endTime ===0 ? round.timings.startTime + roundTimeLength : round.timings.endTime);
         });
         
 
